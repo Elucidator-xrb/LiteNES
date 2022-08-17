@@ -43,18 +43,24 @@ To port this project, replace the following functions by your own:
 #include "fce.h"
 #include "common.h"
 #include "fbdev.h"
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_primitives.h>
+//#include <allegro5/allegro.h>
+//#include <allegro5/allegro_primitives.h>
 
-static u32 vtx[100000]; // let us guess it is used for 256*240 screen
+static u32 vtx[256*240]; // let us guess it is used for 256*240 screen
 u32 color_map[64];
 int vtx_sz = 0;         // seemed useless now
 
+// 在这里更新键位状态
+uint8_t key_state[9];
+void update_key_state()
+{
+    
+}
 /* Wait until next allegro timer event is fired. */
 void wait_for_frame()
 {
-    int i = 10000000;
-    while (i--);
+    // int i = 10000000;
+    // while (i--);
     // while (1)
     // {
     //     ALLEGRO_EVENT event;
@@ -133,6 +139,9 @@ void nes_flip_display()
    Returns 1 if button #b is pressed. */
 int nes_key_state(int b)
 {
+    // 仅仅只有9个键，计划使用两个8 1byte数拼接而成。
+    // 为了与ascii控制码兼容，使用 224 - 255 之间的数字进行编码，便于位运算。
+    // 选取
     switch (b)
     {
         case 0: // On / Off
