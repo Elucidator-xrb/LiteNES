@@ -133,28 +133,26 @@ void nes_flip_display()
    Returns 1 if button #b is pressed. */
 int nes_key_state(int b)
 {
-    ALLEGRO_KEYBOARD_STATE state;
-    al_get_keyboard_state(&state);
     switch (b)
     {
         case 0: // On / Off
             return 1;
         case 1: // A
-            return al_key_down(&state, ALLEGRO_KEY_K);
+            return 0; // al_key_down(&state, ALLEGRO_KEY_K);
         case 2: // B
-            return al_key_down(&state, ALLEGRO_KEY_J);
+            return 0; // al_key_down(&state, ALLEGRO_KEY_J);
         case 3: // SELECT
-            return al_key_down(&state, ALLEGRO_KEY_U);
+            return 0; // al_key_down(&state, ALLEGRO_KEY_U);
         case 4: // START
-            return al_key_down(&state, ALLEGRO_KEY_I);
+            return 0; // al_key_down(&state, ALLEGRO_KEY_I);
         case 5: // UP
-            return al_key_down(&state, ALLEGRO_KEY_W);
+            return 0; // al_key_down(&state, ALLEGRO_KEY_W);
         case 6: // DOWN
-            return al_key_down(&state, ALLEGRO_KEY_S);
+            return 0; // al_key_down(&state, ALLEGRO_KEY_S);
         case 7: // LEFT
-            return al_key_down(&state, ALLEGRO_KEY_A);
+            return 0; // al_key_down(&state, ALLEGRO_KEY_A);
         case 8: // RIGHT
-            return al_key_down(&state, ALLEGRO_KEY_D);
+            return 0; // al_key_down(&state, ALLEGRO_KEY_D);
         default:
             return 1;
     }
