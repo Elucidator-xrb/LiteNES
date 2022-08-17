@@ -91,10 +91,10 @@ void nes_flush_buf(PixelBuf *buf)
         y = p->y;
         c = color_map[p->c];
 
-        DRAW_BUF(vtx, x*2, y*2, c);
-        DRAW_BUF(vtx, x*2+1, y*2, c);
-        DRAW_BUF(vtx, x*2, y*2+1, c);
-        DRAW_BUF(vtx, x*2+1, y*2+1, c);
+        DRAW_BUF(vtx, x  , y, c);
+        DRAW_BUF(vtx, x+1, y, c);
+        DRAW_BUF(vtx, x  , y+1, c);
+        DRAW_BUF(vtx, x+1, y+1, c);
     }
     printf("finsh nes_flush_buf\n");
 }
