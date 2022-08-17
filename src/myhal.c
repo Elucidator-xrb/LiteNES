@@ -65,13 +65,13 @@ void nes_set_bg_color(int c)
     printf("start nes_set_bg_color...  ");
     int x, y;
     BG_COLOR = color_map[c];
-    for (y = 0; y < SCREEN_HEIGHT; ++y)
-    {
-        for (x = 0; x < SCREEN_WIDTH; ++x)
-        {
-            DRAW_PIXEL_BACK(x, y, BG_COLOR);
-        }
-    }
+    // for (y = 0; y < SCREEN_HEIGHT; ++y)
+    // {
+    //     for (x = 0; x < SCREEN_WIDTH; ++x)
+    //     {
+    //         DRAW_PIXEL_BACK(x, y, BG_COLOR);
+    //     }
+    // }
     printf("finish nes_set_bg_color\n");
 }
 
