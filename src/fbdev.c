@@ -1,7 +1,17 @@
 #include "fbdev.h"
 #include "hal.h"
 
-void fb_init() {
+u32 *pfb = NULL;
+u32 P_WIDTH, P_HEIGHT;  // pysical fb screen
+u32 V_WIDTH, V_HEIGHT;  // virtual fb screen
+u32 BBP;
+
+u32 DISPLAY_X, DISPLAY_Y; // start point to display the window
+u32 BG_COLOR;
+
+unsigned long SCREENSIZE;
+
+int fb_init() {
     int fd, r;
 
     struct fb_fix_screeninfo finfo = {0};
@@ -19,7 +29,7 @@ void fb_init() {
 		perror("failed to get fix_screeninfo");
 		return r;
 	}
-	printf("smem_start = 0x%x, smem_len = %u.\n", finfo.smem_start, finfo.smem_len);
+	printf("smem_start = 0x%lx, smem_len = %u.\n", finfo.smem_start, finfo.smem_len);
 
     // read var_screeninfo
     if ((r = ioctl(fd, FBIOGET_VSCREENINFO, &vinfo)) < 0) {
@@ -54,6 +64,8 @@ void fb_init() {
 
     DISPLAY_X = (P_WIDTH  >> 1) - (SCREEN_WIDTH  >> 1);
     DISPLAY_Y = (P_HEIGHT >> 1) - (SCREEN_HEIGHT >> 1);
+
+    return 0;
 }
 
 // in fact, r g b should each limit to 8bit
