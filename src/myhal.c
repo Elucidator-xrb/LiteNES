@@ -61,6 +61,7 @@ void wait_for_frame()
 /* Set background color. RGB value of c is defined in fce.h */
 void nes_set_bg_color(int c)
 {
+    fb_flip_display();
     printf("start nes_set_bg_color...  ");
     int x, y;
     BG_COLOR = color_map[c];
@@ -84,7 +85,8 @@ void nes_flush_buf(PixelBuf *buf)
     for (i = 0; i < buf->size; ++i)
     {
         p = &(buf->buf[i]);
-        x = (p->x) & 0x1ff;
+        x = p->x;
+        if(x & 0x100) continue;
         y = p->y;
         c = color_map[p->c];
         DRAW_PIXEL_BACK(x, y, c);
@@ -115,7 +117,6 @@ void nes_hal_init()
 void nes_flip_display()
 {
     printf("start nes_flip_display...  ");
-    fb_flip_display();
     for (int i = 0; i < 64; i++)
     {
         pal color = palette[i];

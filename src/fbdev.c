@@ -76,7 +76,7 @@ int fb_init() {
 
 // in fact, r g b should each limit to 8bit
 u32 fb_map_rgb(u8 r, u8 g, u8 b) {
-    return (0x00 << 24) | (r << 16) | (g << 8) | b;
+    return (0xff << 24) | (r << 16) | (g << 8) | b;
 }
 
 void fb_init_background(u32 color) {
