@@ -140,7 +140,6 @@ void nes_hal_init()
 void nes_flip_display()
 {
     printf("start nes_flip_display...  ");
-    int x, y;
     // fb_draw_display(vtx);
     fb_flip_display();
     // for (y = 0; y < SCREEN_HEIGHT; ++y)
