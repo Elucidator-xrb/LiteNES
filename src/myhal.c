@@ -54,13 +54,13 @@ u32 color_map[64];
 uint8_t key_state[9];
 void update_key_state()
 {
-    
+    return;
 }
 /* Wait until next allegro timer event is fired. */
 void wait_for_frame()
 {
-    // int i = 10000000;
-    // while (i--);
+    int i = 10000000;
+    while (i--);
     // while (1)
     // {
     //     ALLEGRO_EVENT event;
@@ -93,15 +93,15 @@ void nes_flush_buf(PixelBuf *buf)
     u32 x, y, c;
     Pixel *p;
     for (i = 0; i < buf->size; ++ i) {
-        p = &buf->buf[i];
+        p = &(buf->buf[i]);
         x = p->x; 
         y = p->y;
         c = color_map[p->c];
 
         DRAW_PIXEL_BACK(x  , y  , c);
-        DRAW_PIXEL_BACK(x+1, y  , c);
-        DRAW_PIXEL_BACK(x  , y+1, c);
-        DRAW_PIXEL_BACK(x+1, y+1, c);
+        // DRAW_PIXEL_BACK(x+1, y  , c);
+        // DRAW_PIXEL_BACK(x  , y+1, c);
+        // DRAW_PIXEL_BACK(x+1, y+1, c);
         // DRAW_BUF(vtx, x  , y, c);
         // DRAW_BUF(vtx, x+1, y, c);
         // DRAW_BUF(vtx, x  , y+1, c);
