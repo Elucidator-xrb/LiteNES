@@ -10,7 +10,8 @@ byte ppu_sprite_palette[4][4];
 bool ppu_2007_first_read;
 byte ppu_addr_latch;
 
-
+byte PPU_SPRRAM[0x100];
+byte PPU_RAM[0x4000];
 
 // PPUCTRL Functions
 

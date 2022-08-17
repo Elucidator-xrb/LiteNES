@@ -94,7 +94,7 @@ void nes_flush_buf(PixelBuf *buf)
     Pixel *p;
     for (i = 0; i < buf->size; ++ i) {
         p = &(buf->buf[i]);
-        x = p->x; 
+        x = (p->x) & 0xff; 
         y = p->y;
         c = color_map[p->c];
 

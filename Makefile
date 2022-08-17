@@ -10,9 +10,9 @@ build/%.o: src/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c -o $@ $<
  
-litenes: $(OBJS)
+litenes: $(CFILES)
 	@echo + LD "->" $@
-	@$(CC) $(OBJS) $(LDFLAGS) -o litenes
+	@$(CC) $(CFILES) $(LDFLAGS) -o litenes -Iinclude
 
 -include $(patsubst %.o, %.d, $(OBJS))
 
