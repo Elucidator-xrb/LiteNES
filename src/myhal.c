@@ -61,7 +61,7 @@ void wait_for_frame()
 /* Set background color. RGB value of c is defined in fce.h */
 void nes_set_bg_color(int c)
 {
-    fb_flip_display();
+    //fb_flip_display();
     printf("start nes_set_bg_color...  ");
     // int x, y;
     BG_COLOR = color_map[c];
