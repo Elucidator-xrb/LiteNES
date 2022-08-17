@@ -76,12 +76,6 @@ void nes_set_bg_color(int c)
     int x, y;
     BG_COLOR = color_map[c];
     // fill vtx buf with BG_COLOR
-    for (y = 0; y < SCREEN_HEIGHT; ++ y) { 
-        for (x = 0; x < SCREEN_WIDTH; ++x) {
-            // DRAW_BUF(vtx, x, y, BG_COLOR);
-            DRAW_PIXEL_BACK(x, y, BG_COLOR);
-        }
-    }
     printf("finish nes_set_bg_color\n");
 }
 
@@ -136,8 +130,15 @@ void nes_hal_init()
 void nes_flip_display()
 {
     printf("start nes_flip_display...  ");
+    int x, y;
     // fb_draw_display(vtx);
     fb_flip_display();
+    for (y = 0; y < SCREEN_HEIGHT; ++ y) { 
+        for (x = 0; x < SCREEN_WIDTH; ++x) {
+            // DRAW_BUF(vtx, x, y, BG_COLOR);
+            DRAW_PIXEL_BACK(x, y, BG_COLOR);
+        }
+    }
     printf("finish nes_flush_buf\n");
 }
 
