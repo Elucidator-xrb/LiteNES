@@ -100,7 +100,7 @@ void fce_run()
 
 void fce_update_screen()
 {
-    int idx = ppu_ram_read(0x3F00);  //printf("color: %d %08x\n", idx, idx);
+    int idx = ppu_ram_read(0x3F00);
     nes_set_bg_color(idx);
     
     if (ppu_shows_sprites())
