@@ -98,10 +98,9 @@ void nes_flush_buf(PixelBuf *buf)
     for (i = 0; i < buf->size; ++i)
     {
         p = &(buf->buf[i]);
-        x = (p->x) & 0xff;
+        x = (p->x) & 0x1ff;
         y = p->y;
         c = color_map[p->c];
-
         DRAW_PIXEL_BACK(x, y, c);
         // DRAW_PIXEL_BACK(x+1, y  , c);
         // DRAW_PIXEL_BACK(x  , y+1, c);
@@ -144,14 +143,14 @@ void nes_flip_display()
     int x, y;
     // fb_draw_display(vtx);
     fb_flip_display();
-    for (y = 0; y < SCREEN_HEIGHT; ++y)
-    {
-        for (x = 0; x < SCREEN_WIDTH; ++x)
-        {
-            // DRAW_BUF(vtx, x, y, BG_COLOR);
-            DRAW_PIXEL_BACK(x, y, BG_COLOR);
-        }
-    }
+    // for (y = 0; y < SCREEN_HEIGHT; ++y)
+    // {
+    //     for (x = 0; x < SCREEN_WIDTH; ++x)
+    //     {
+    //         // DRAW_BUF(vtx, x, y, BG_COLOR);
+    //         DRAW_PIXEL_BACK(x, y, BG_COLOR);
+    //     }
+    // }
     for (int i = 0; i < 64; i++)
     {
         pal color = palette[i];
