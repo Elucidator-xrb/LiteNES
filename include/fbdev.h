@@ -15,13 +15,13 @@ typedef unsigned char u8;
 #include <sys/mman.h>
 #include <unistd.h>
 
-// in fbdev.c
+// define in fbdev.c
 extern u32 *pfb;
 extern u32 P_WIDTH, P_HEIGHT;  // pysical fb screen
 extern u32 V_WIDTH, V_HEIGHT;  // virtual fb screen
 extern u32 BBP;
 
-extern u32 DISPLAY_X, DISPLAY_Y; // start point to display the window
+extern u32 DISPLAY_X, DISPLAY_Y; // start point to display the nes window
 extern u32 BG_COLOR;
 
 extern unsigned long SCREENSIZE;
@@ -33,5 +33,6 @@ extern unsigned long SCREENSIZE;
 int fb_init();
 u32  fb_map_rgb(u8 r, u8 g, u8 b);
 void fb_draw_display(u32 *buf);
+void draw_back(u32 color);
 
 #endif

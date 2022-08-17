@@ -64,6 +64,9 @@ int fb_init() {
 
     DISPLAY_X = (P_WIDTH  >> 1) - (SCREEN_WIDTH  >> 1);
     DISPLAY_Y = (P_HEIGHT >> 1) - (SCREEN_HEIGHT >> 1);
+    printf("display_x: %u, display_y: %u\n", DISPLAY_X, DISPLAY_Y);
+
+    draw_back(0xffffffff);
 
     return 0;
 }
@@ -75,9 +78,23 @@ u32 fb_map_rgb(u8 r, u8 g, u8 b) {
 
 void fb_draw_display(u32 *buf) {
     int x, y;
+    printf("%08x\n", COLOR_OF(buf, SCREEN_HEIGHT-1, SCREEN_WIDTH-1));
+    printf("max_x:%d  max_y:%d\n", SCREEN_WIDTH+DISPLAY_X, SCREEN_HEIGHT+DISPLAY_Y);
     for (y = 0; y < SCREEN_HEIGHT; ++ y) {
         for (x = 0; x < SCREEN_WIDTH; ++ x) {
-            DRAW_PIXEL(DISPLAY_X+x, DISPLAY_Y+y, COLOR_OF(buf, x, y));
+            //printf("[x y c]= %u %u %08x\n", x, y, COLOR_OF(buf,x,y));
+            DRAW_PIXEL(DISPLAY_X+x, DISPLAY_Y+y, COLOR_OF(buf,x,y));
+            //DRAW_PIXEL(DISPLAY_X+x, DISPLAY_Y+y, 0xfff0f0f0);
         }
     }
+}
+
+void draw_back(u32 color) {
+	u32 x, y;
+	
+	for (y = 0; y < P_HEIGHT; ++ y) {
+		for (x = 0; x < P_WIDTH; ++ x) {
+			DRAW_PIXEL(x, y, color);
+		}
+	}
 }

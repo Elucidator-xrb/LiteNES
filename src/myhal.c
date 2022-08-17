@@ -66,6 +66,7 @@ void wait_for_frame()
 /* Set background color. RGB value of c is defined in fce.h */
 void nes_set_bg_color(int c)
 {
+    printf("start nes_set_bg_color...  ");
     int x, y;
     BG_COLOR = color_map[c];
     // fill vtx buf with BG_COLOR
@@ -74,11 +75,13 @@ void nes_set_bg_color(int c)
             DRAW_BUF(vtx, x, y, BG_COLOR);
         }
     }
+    printf("finish nes_set_bg_color\n");
 }
 
 /* Flush the pixel buffer */
 void nes_flush_buf(PixelBuf *buf) 
 {
+    printf("start nes_flush_buf...  ");
     int i;
     u32 x, y, c;
     Pixel *p;
@@ -93,6 +96,7 @@ void nes_flush_buf(PixelBuf *buf)
         DRAW_BUF(vtx, x*2, y*2+1, c);
         DRAW_BUF(vtx, x*2+1, y*2+1, c);
     }
+    printf("finsh nes_flush_buf\n");
 }
 
 /* Initialization:
@@ -109,6 +113,7 @@ void nes_hal_init()
         color_map[i] = fb_map_rgb(color.r, color.g, color.b);
     }
 
+    printf("finsh nes_hal_init\n");
     // fce_timer = al_create_timer(1.0 / FPS);
     // fce_event_queue = al_create_event_queue();
     // al_register_event_source(fce_event_queue, al_get_timer_event_source(fce_timer));
@@ -119,7 +124,9 @@ void nes_hal_init()
    Timer ensures this function is called FPS times a second. */
 void nes_flip_display()
 {
+    printf("start nes_flip_display...  ");
     fb_draw_display(vtx);
+    printf("finish nes_flush_buf\n");
 }
 
 /* Query a button's state.
