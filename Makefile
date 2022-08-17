@@ -1,4 +1,4 @@
-CC      := gcc-4.4
+CC      := gcc
 CFLAGS  := -MMD -g -I./include -Wall -Werror
 LDFLAGS := -lallegro -lallegro_main -lallegro_primitives
 
