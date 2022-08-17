@@ -1,6 +1,6 @@
-CC      := gcc
-CFLAGS  := -MMD -g -I./include -Wall -Werror
-LDFLAGS := -lallegro -lallegro_main -lallegro_primitives
+CC      := /home/lxb/buildroot-2020.02.6/output/host/bin/mipsel-buildroot-linux-musl-gcc
+CFLAGS  := -MMD -g -I./include -Wall -Werror --sysroot /home/lxb/buildroot-2020.02.6/output/staging
+LDFLAGS := --sysroot /home/lxb/buildroot-2020.02.6/output/staging
 
 CFILES  := $(shell find src -name "*.c")
 OBJS    := $(CFILES:src/%.c=build/%.o)
