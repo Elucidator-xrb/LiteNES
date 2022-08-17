@@ -46,9 +46,9 @@ To port this project, replace the following functions by your own:
 //#include <allegro5/allegro.h>
 //#include <allegro5/allegro_primitives.h>
 
-static u32 vtx[256*240]; // let us guess it is used for 256*240 screen
+// static u32 vtx[100000]; // let us guess it is used for 256*240 screen
 u32 color_map[64];
-int vtx_sz = 0;         // seemed useless now
+// int vtx_sz = 0;         // seemed useless now
 
 // 在这里更新键位状态
 uint8_t key_state[9];
@@ -78,7 +78,8 @@ void nes_set_bg_color(int c)
     // fill vtx buf with BG_COLOR
     for (y = 0; y < SCREEN_HEIGHT; ++ y) { 
         for (x = 0; x < SCREEN_WIDTH; ++x) {
-            DRAW_BUF(vtx, x, y, BG_COLOR);
+            // DRAW_BUF(vtx, x, y, BG_COLOR);
+            DRAW_PIXEL_BACK(x, y, BG_COLOR);
         }
     }
     printf("finish nes_set_bg_color\n");
@@ -97,10 +98,14 @@ void nes_flush_buf(PixelBuf *buf)
         y = p->y;
         c = color_map[p->c];
 
-        DRAW_BUF(vtx, x*2, y*2, c);
-        DRAW_BUF(vtx, x*2+1, y*2, c);
-        DRAW_BUF(vtx, x*2, y*2+1, c);
-        DRAW_BUF(vtx, x*2+1, y*2+1, c);
+        DRAW_PIXEL_BACK(x  , y  , c);
+        DRAW_PIXEL_BACK(x+1, y  , c);
+        DRAW_PIXEL_BACK(x  , y+1, c);
+        DRAW_PIXEL_BACK(x+1, y+1, c);
+        // DRAW_BUF(vtx, x  , y, c);
+        // DRAW_BUF(vtx, x+1, y, c);
+        // DRAW_BUF(vtx, x  , y+1, c);
+        // DRAW_BUF(vtx, x+1, y+1, c);
     }
     printf("finsh nes_flush_buf\n");
 }
@@ -131,7 +136,8 @@ void nes_hal_init()
 void nes_flip_display()
 {
     printf("start nes_flip_display...  ");
-    fb_draw_display(vtx);
+    // fb_draw_display(vtx);
+    fb_flip_display();
     printf("finish nes_flush_buf\n");
 }
 

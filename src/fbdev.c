@@ -2,6 +2,8 @@
 #include "hal.h"
 
 u32 *pfb = NULL;
+u32 *pfb_back = NULL;
+u32 *pfb_show = NULL;
 u32 P_WIDTH, P_HEIGHT;  // pysical fb screen
 u32 V_WIDTH, V_HEIGHT;  // virtual fb screen
 u32 BBP;
@@ -11,11 +13,12 @@ u32 BG_COLOR;
 
 unsigned long SCREENSIZE;
 
-int fb_init() {
-    int fd, r;
+struct fb_fix_screeninfo finfo = {0};
+struct fb_var_screeninfo vinfo = {0};
+int fd;
 
-    struct fb_fix_screeninfo finfo = {0};
-	struct fb_var_screeninfo vinfo = {0};
+int fb_init() {
+    int r;
 
     // open /dev/fb
     if ((fd = open(FBDEV, O_RDWR)) < 0) {
@@ -53,7 +56,9 @@ int fb_init() {
 		return -1;
 	}
 	printf("pfb = %p.\n", pfb);
-    pfb = pfb + vinfo.xoffset + vinfo.yoffset * V_WIDTH;
+    //pfb = pfb + vinfo.xoffset + vinfo.yoffset * V_WIDTH;
+    pfb_show = pfb;
+    pfb_back = pfb + 240 * V_WIDTH;
 
     // display the fb
     vinfo.activate |= FB_ACTIVATE_NOW | FB_ACTIVATE_FORCE;
@@ -78,8 +83,8 @@ u32 fb_map_rgb(u8 r, u8 g, u8 b) {
 
 void fb_draw_display(u32 *buf) {
     int x, y;
-    printf("%08x\n", COLOR_OF_BUF(buf, SCREEN_HEIGHT-1, SCREEN_WIDTH-1));
-    printf("max_x:%d  max_y:%d\n", SCREEN_WIDTH+DISPLAY_X, SCREEN_HEIGHT+DISPLAY_Y);
+    // printf("%08x\n", COLOR_OF_BUF(buf, SCREEN_HEIGHT-1, SCREEN_WIDTH-1));
+    // printf("max_x:%d  max_y:%d\n", SCREEN_WIDTH+DISPLAY_X, SCREEN_HEIGHT+DISPLAY_Y);
     for (y = 0; y < SCREEN_HEIGHT; ++ y) {
         for (x = 0; x < SCREEN_WIDTH; ++ x) {
             //printf("[x y c]= %u %u %08x\n", x, y, COLOR_OF_BUF(buf,x,y));
@@ -97,4 +102,20 @@ void draw_back(u32 color) {
 			DRAW_PIXEL(x, y, color);
 		}
 	}
+}
+
+void fb_flip_display() {
+    if (vinfo.yoffset == 0) 
+        vinfo.yoffset = 240;
+    else
+        vinfo.yoffset = 0;
+
+    // execute changes
+    if(ioctl(fd, FBIOPUT_VSCREENINFO, &vinfo) < 0) {
+      perror("failed to flip\n");
+    }
+
+    u32 *pfb_tmp = pfb_show;
+    pfb_show = pfb_back;
+    pfb_back = pfb_tmp;
 }
