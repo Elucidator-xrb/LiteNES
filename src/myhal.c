@@ -23,7 +23,7 @@ To port this project, replace the following functions by your own:
             do_something();
         }
 
-6) int nes_key_state(int b) 
+6) int nes_key_state(int b)
     Query button b's state (1 to be pressed, otherwise 0).
     The correspondence of b and the buttons:
       0 - Power
@@ -60,7 +60,8 @@ void update_key_state()
 void wait_for_frame()
 {
     int i = 10000000;
-    while (i--);
+    while (i--)
+        ;
     // while (1)
     // {
     //     ALLEGRO_EVENT event;
@@ -75,8 +76,10 @@ void nes_set_bg_color(int c)
     printf("start nes_set_bg_color...  ");
     int x, y;
     BG_COLOR = color_map[c];
-    for (y = 0; y < SCREEN_HEIGHT; ++ y) { 
-        for (x = 0; x < SCREEN_WIDTH; ++x) {
+    for (y = 0; y < SCREEN_HEIGHT; ++y)
+    {
+        for (x = 0; x < SCREEN_WIDTH; ++x)
+        {
             // DRAW_BUF(vtx, x, y, BG_COLOR);
             DRAW_PIXEL_BACK(x, y, BG_COLOR);
         }
@@ -86,19 +89,20 @@ void nes_set_bg_color(int c)
 }
 
 /* Flush the pixel buffer */
-void nes_flush_buf(PixelBuf *buf) 
+void nes_flush_buf(PixelBuf *buf)
 {
     printf("start nes_flush_buf...  ");
     int i;
     u32 x, y, c;
     Pixel *p;
-    for (i = 0; i < buf->size; ++ i) {
+    for (i = 0; i < buf->size; ++i)
+    {
         p = &(buf->buf[i]);
-        x = (p->x) & 0xff; 
+        x = (p->x) & 0xff;
         y = p->y;
         c = color_map[p->c];
 
-        DRAW_PIXEL_BACK(x  , y  , c);
+        DRAW_PIXEL_BACK(x, y, c);
         // DRAW_PIXEL_BACK(x+1, y  , c);
         // DRAW_PIXEL_BACK(x  , y+1, c);
         // DRAW_PIXEL_BACK(x+1, y+1, c);
@@ -111,7 +115,7 @@ void nes_flush_buf(PixelBuf *buf)
 }
 
 /* Initialization:
-   (1) start a 1/FPS Hz timer. 
+   (1) start a 1/FPS Hz timer.
    (2) register fce_timer handle on each timer event */
 void nes_hal_init()
 {
@@ -119,7 +123,8 @@ void nes_hal_init()
 
     fb_init();
 
-    for (i = 0; i < 64; i ++) {
+    for (i = 0; i < 64; i++)
+    {
         pal color = palette[i];
         color_map[i] = fb_map_rgb(color.r, color.g, color.b);
     }
@@ -131,7 +136,7 @@ void nes_hal_init()
     // al_start_timer(fce_timer);
 }
 
-/* Update screen at FPS rate by allegro's drawing function. 
+/* Update screen at FPS rate by allegro's drawing function.
    Timer ensures this function is called FPS times a second. */
 void nes_flip_display()
 {
@@ -139,11 +144,18 @@ void nes_flip_display()
     int x, y;
     // fb_draw_display(vtx);
     fb_flip_display();
-    for (y = 0; y < SCREEN_HEIGHT; ++ y) { 
-        for (x = 0; x < SCREEN_WIDTH; ++x) {
+    for (y = 0; y < SCREEN_HEIGHT; ++y)
+    {
+        for (x = 0; x < SCREEN_WIDTH; ++x)
+        {
             // DRAW_BUF(vtx, x, y, BG_COLOR);
             DRAW_PIXEL_BACK(x, y, BG_COLOR);
         }
+    }
+    for (int i = 0; i < 64; i++)
+    {
+        pal color = palette[i];
+        color_map[i] = fb_map_rgb(color.r, color.g, color.b);
     }
     printf("finish nes_flush_buf\n");
 }
@@ -157,26 +169,26 @@ int nes_key_state(int b)
     // 选取
     switch (b)
     {
-        case 0: // On / Off
-            return 1;
-        case 1: // A
-            return 0; // al_key_down(&state, ALLEGRO_KEY_K);
-        case 2: // B
-            return 0; // al_key_down(&state, ALLEGRO_KEY_J);
-        case 3: // SELECT
-            return 0; // al_key_down(&state, ALLEGRO_KEY_U);
-        case 4: // START
-            return 0; // al_key_down(&state, ALLEGRO_KEY_I);
-        case 5: // UP
-            return 0; // al_key_down(&state, ALLEGRO_KEY_W);
-        case 6: // DOWN
-            return 0; // al_key_down(&state, ALLEGRO_KEY_S);
-        case 7: // LEFT
-            return 0; // al_key_down(&state, ALLEGRO_KEY_A);
-        case 8: // RIGHT
-            return 0; // al_key_down(&state, ALLEGRO_KEY_D);
-        default:
-            return 1;
+    case 0: // On / Off
+        return 1;
+    case 1:       // A
+        return 0; // al_key_down(&state, ALLEGRO_KEY_K);
+    case 2:       // B
+        return 0; // al_key_down(&state, ALLEGRO_KEY_J);
+    case 3:       // SELECT
+        return 0; // al_key_down(&state, ALLEGRO_KEY_U);
+    case 4:       // START
+        return 0; // al_key_down(&state, ALLEGRO_KEY_I);
+    case 5:       // UP
+        return 0; // al_key_down(&state, ALLEGRO_KEY_W);
+    case 6:       // DOWN
+        return 0; // al_key_down(&state, ALLEGRO_KEY_S);
+    case 7:       // LEFT
+        return 0; // al_key_down(&state, ALLEGRO_KEY_A);
+    case 8:       // RIGHT
+        return 0; // al_key_down(&state, ALLEGRO_KEY_D);
+    default:
+        return 1;
     }
 }
 
