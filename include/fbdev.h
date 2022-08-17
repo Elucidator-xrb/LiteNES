@@ -17,6 +17,7 @@ typedef unsigned char u8;
 
 // define in fbdev.c
 extern u32 *pfb;
+extern u32 *pfb_back, *pfb_show;
 extern u32 P_WIDTH, P_HEIGHT;  // pysical fb screen
 extern u32 V_WIDTH, V_HEIGHT;  // virtual fb screen
 extern u32 BBP;
@@ -30,9 +31,12 @@ extern unsigned long SCREENSIZE;
 #define DRAW_BUF(buf,x,y,c)     *((buf) + (x) + (y) * SCREEN_WIDTH) = (c)
 #define COLOR_OF_BUF(buf,x,y)   *((buf) + (x) + (y) * SCREEN_WIDTH)
 
+#define DRAW_PIXEL_BACK(x,y,c)  *(pfb_back + (x) + (y) * V_WIDTH) = (c);
+
 int fb_init();
 u32  fb_map_rgb(u8 r, u8 g, u8 b);
 void fb_draw_display(u32 *buf);
 void draw_back(u32 color);
+void fb_flip_display();
 
 #endif
