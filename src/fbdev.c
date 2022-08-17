@@ -13,8 +13,8 @@ u32 BG_COLOR;
 
 unsigned long SCREENSIZE;
 
-struct fb_fix_screeninfo finfo = {0};
-struct fb_var_screeninfo vinfo = {0};
+struct fb_fix_screeninfo finfo;
+struct fb_var_screeninfo vinfo;
 int fd;
 
 int fb_init() {

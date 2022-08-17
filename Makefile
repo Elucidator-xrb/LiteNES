@@ -1,5 +1,5 @@
-CC      := gcc
-CFLAGS  := -MMD -O2 -I./include -Wall -Werror
+CC      := gcc-4.4
+CFLAGS  := -MMD -g -I./include -Wall -Werror
 LDFLAGS := -lallegro -lallegro_main -lallegro_primitives
 
 CFILES  := $(shell find src -name "*.c")
