@@ -3,6 +3,8 @@
 
 #include "nes.h"
 
+#define SELF_IMPL 1
+
 struct Pixel {
     int x, y; // (x, y) coordinate
     int c; // RGB value of colors can be found in fce.h

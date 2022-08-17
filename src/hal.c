@@ -37,6 +37,9 @@ To port this project, replace the following functions by your own:
       8 - RIGHT
 */
 #include "hal.h"
+
+#if (SELF_IMPL == 0)
+
 #include "fce.h"
 #include "common.h"
 #include <allegro5/allegro.h>
@@ -145,3 +148,4 @@ int nes_key_state(int b)
     }
 }
 
+#endif
