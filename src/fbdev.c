@@ -1,7 +1,6 @@
 #include "fbdev.h"
 #include "hal.h"
 
-u32 *pfb = NULL;
 u32 *pfb_back = NULL;
 u32 *pfb_show = NULL;
 u32 P_WIDTH, P_HEIGHT;  // pysical fb screen
@@ -51,14 +50,12 @@ int fb_init() {
 	printf("screensize = %ld\n", SCREENSIZE);
 
     // do mem map
-    if ((pfb = mmap(NULL, SCREENSIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0)) == NULL) {
+    if ((pfb_show = mmap(NULL, SCREENSIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0)) == NULL) {
 		perror("failed to mmap");
 		return -1;
 	}
-	printf("pfb = %p.\n", pfb);
-    //pfb = pfb + vinfo.xoffset + vinfo.yoffset * V_WIDTH;
-    pfb_show = pfb;
-    pfb_back = pfb + 240 * V_WIDTH;
+	printf("pfb = %p.\n", pfb_show);
+    pfb_back = pfb_show + 240 * V_WIDTH;
 
     // display the fb
     vinfo.activate |= FB_ACTIVATE_NOW | FB_ACTIVATE_FORCE;
@@ -67,11 +64,12 @@ int fb_init() {
       return -1;
     }
 
+    // use to find center of the fb, currently not used
     DISPLAY_X = (P_WIDTH  >> 1) - (SCREEN_WIDTH  >> 1);
     DISPLAY_Y = (P_HEIGHT >> 1) - (SCREEN_HEIGHT >> 1);
     printf("display_x: %u, display_y: %u\n", DISPLAY_X, DISPLAY_Y);
 
-    draw_back(0xffffffff);
+    fb_init_background(0xffffffff);
 
     return 0;
 }
@@ -81,25 +79,12 @@ u32 fb_map_rgb(u8 r, u8 g, u8 b) {
     return (0x00 << 24) | (r << 16) | (g << 8) | b;
 }
 
-void fb_draw_display(u32 *buf) {
-    int x, y;
-    // printf("%08x\n", COLOR_OF_BUF(buf, SCREEN_HEIGHT-1, SCREEN_WIDTH-1));
-    // printf("max_x:%d  max_y:%d\n", SCREEN_WIDTH+DISPLAY_X, SCREEN_HEIGHT+DISPLAY_Y);
-    for (y = 0; y < SCREEN_HEIGHT; ++ y) {
-        for (x = 0; x < SCREEN_WIDTH; ++ x) {
-            //printf("[x y c]= %u %u %08x\n", x, y, COLOR_OF_BUF(buf,x,y));
-            DRAW_PIXEL(DISPLAY_X+x, DISPLAY_Y+y, COLOR_OF_BUF(buf,x,y));
-            //DRAW_PIXEL(DISPLAY_X+x, DISPLAY_Y+y, 0xfff0f0f0);
-        }
-    }
-}
-
-void draw_back(u32 color) {
+void fb_init_background(u32 color) {
 	u32 x, y;
 	
 	for (y = 0; y < P_HEIGHT; ++ y) {
 		for (x = 0; x < P_WIDTH; ++ x) {
-			DRAW_PIXEL(x, y, color);
+			DRAW_PIXEL(pfb_show, x, y, color);
 		}
 	}
 }
@@ -111,10 +96,10 @@ void fb_flip_display() {
         vinfo.yoffset = 0;
 
     // execute changes
-    if(ioctl(fd, FBIOPUT_VSCREENINFO, &vinfo) < 0) {
+    if(ioctl(fd, FBIOPUT_VSCREENINFO, &vinfo) < 0)
       perror("failed to flip\n");
-    }
 
+    // switch pfb
     u32 *pfb_tmp = pfb_show;
     pfb_show = pfb_back;
     pfb_back = pfb_tmp;

@@ -43,12 +43,8 @@ To port this project, replace the following functions by your own:
 #include "fce.h"
 #include "common.h"
 #include "fbdev.h"
-//#include <allegro5/allegro.h>
-//#include <allegro5/allegro_primitives.h>
 
-// static u32 vtx[100000]; // let us guess it is used for 256*240 screen
 u32 color_map[64];
-// int vtx_sz = 0;         // seemed useless now
 
 // 在这里更新键位状态
 uint8_t key_state[9];
@@ -59,16 +55,7 @@ void update_key_state()
 /* Wait until next allegro timer event is fired. */
 void wait_for_frame()
 {
-    ;
-    // int i = 10000000;
-    // while (i--)
-    //     ;
-    // while (1)
-    // {
-    //     ALLEGRO_EVENT event;
-    //     al_wait_for_event(fce_event_queue, &event);
-    //     if (event.type == ALLEGRO_EVENT_TIMER) break;
-    // }
+    return ;
 }
 
 /* Set background color. RGB value of c is defined in fce.h */
@@ -81,11 +68,9 @@ void nes_set_bg_color(int c)
     {
         for (x = 0; x < SCREEN_WIDTH; ++x)
         {
-            // DRAW_BUF(vtx, x, y, BG_COLOR);
             DRAW_PIXEL_BACK(x, y, BG_COLOR);
         }
     }
-    // fill vtx buf with BG_COLOR
     printf("finish nes_set_bg_color\n");
 }
 
@@ -103,13 +88,6 @@ void nes_flush_buf(PixelBuf *buf)
         y = p->y;
         c = color_map[p->c];
         DRAW_PIXEL_BACK(x, y, c);
-        // DRAW_PIXEL_BACK(x+1, y  , c);
-        // DRAW_PIXEL_BACK(x  , y+1, c);
-        // DRAW_PIXEL_BACK(x+1, y+1, c);
-        // DRAW_BUF(vtx, x  , y, c);
-        // DRAW_BUF(vtx, x+1, y, c);
-        // DRAW_BUF(vtx, x  , y+1, c);
-        // DRAW_BUF(vtx, x+1, y+1, c);
     }
     printf("finsh nes_flush_buf\n");
 }
@@ -130,10 +108,6 @@ void nes_hal_init()
     }
 
     printf("finsh nes_hal_init\n");
-    // fce_timer = al_create_timer(1.0 / FPS);
-    // fce_event_queue = al_create_event_queue();
-    // al_register_event_source(fce_event_queue, al_get_timer_event_source(fce_timer));
-    // al_start_timer(fce_timer);
 }
 
 /* Update screen at FPS rate by allegro's drawing function.
@@ -141,22 +115,13 @@ void nes_hal_init()
 void nes_flip_display()
 {
     printf("start nes_flip_display...  ");
-    // fb_draw_display(vtx);
     fb_flip_display();
-    // for (y = 0; y < SCREEN_HEIGHT; ++y)
-    // {
-    //     for (x = 0; x < SCREEN_WIDTH; ++x)
-    //     {
-    //         // DRAW_BUF(vtx, x, y, BG_COLOR);
-    //         DRAW_PIXEL_BACK(x, y, BG_COLOR);
-    //     }
-    // }
     for (int i = 0; i < 64; i++)
     {
         pal color = palette[i];
         color_map[i] = fb_map_rgb(color.r, color.g, color.b);
     }
-    printf("finish nes_flush_buf\n");
+    printf("finish nes_flip_display\n");
 }
 
 /* Query a button's state.
