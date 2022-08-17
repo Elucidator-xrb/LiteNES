@@ -26,8 +26,8 @@ extern u32 BG_COLOR;
 
 extern unsigned long SCREENSIZE;
 
-#define DRAW_PIXEL(pfb,x,y,c)       *((pfb) + (x) + (y) * V_WIDTH) = (c)
-#define DRAW_PIXEL_BACK(x,y,c)  *(pfb_back + (x) + (y) * V_WIDTH) = (c);
+#define DRAW_PIXEL(pfb,x,y,c)   *((pfb) + (x) + (y) * V_WIDTH) = (c)
+#define DRAW_PIXEL_BACK(x,y,c)  *(pfb_back + (x) + (y) * V_WIDTH) = (c)
 
 int  fb_init();
 u32  fb_map_rgb(u8 r, u8 g, u8 b);
