@@ -59,9 +59,10 @@ void update_key_state()
 /* Wait until next allegro timer event is fired. */
 void wait_for_frame()
 {
-    int i = 10000000;
-    while (i--)
-        ;
+    ;
+    // int i = 10000000;
+    // while (i--)
+    //     ;
     // while (1)
     // {
     //     ALLEGRO_EVENT event;
